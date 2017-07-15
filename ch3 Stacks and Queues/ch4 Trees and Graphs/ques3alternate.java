@@ -16,7 +16,6 @@ class Node{
       level=l;
   }
 }
-
 class Linked
 {
   Integer data;
