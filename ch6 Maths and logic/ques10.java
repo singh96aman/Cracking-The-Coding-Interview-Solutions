@@ -48,7 +48,7 @@ class ques10
 
     ques10 q = new ques10();
     int bin[]= new int[10];
-    q.getBinary(128,bin);
+    q.getBinary(57,bin);
 
     // Now assign strip values and check
 
