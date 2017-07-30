@@ -17,3 +17,4 @@ class ques6{
     q.towerOfHanoi(n,a[0],a[1],a[2]);
   }
 }
+18001035466

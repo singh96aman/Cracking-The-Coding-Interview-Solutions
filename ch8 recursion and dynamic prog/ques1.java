@@ -15,7 +15,6 @@ class ques1{
 
     ques1 q = new ques1();
     System.out.println(q.findAllPossiblePaths(36));
-
   }
 
 }

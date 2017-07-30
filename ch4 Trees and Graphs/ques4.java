@@ -49,6 +49,15 @@ class Tree{
   }
 }
 
+  void output(Node n)
+  {
+    if(n!=null){
+      System.out.println(n.data);
+      output(n.left);
+      output(n.right);
+    }
+  }
+
   void checkBalance()
   {
     Node temp =this.root;
@@ -83,6 +92,7 @@ class ques4
     //tree.add(5);
     tree.add(4);
     tree.add(8);
+    tree.output(tree.root);
       System.out.println(tree.root.data);
     tree.checkBalance();
   }
