@@ -72,7 +72,7 @@ class nodedel{
     head.appendToTail(0);
     head.appendToTail(11);
     head.output();
-    //head = head.del(head,4);
+    //head = head.del(head,5);
     head = head.delitoj(head,2,4);
     head.output();
   }
