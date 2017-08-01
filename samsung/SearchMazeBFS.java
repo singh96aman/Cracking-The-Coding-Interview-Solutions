@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.Queue;
 
 public class SearchMazeBFS {
     // function to find the shortest path between

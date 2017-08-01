@@ -16,10 +16,12 @@ class Graph{
   }
 
   void bfs(int s){
+    
     boolean[] visited = new boolean[V];
     LinkedList<Integer> queue = new LinkedList<Integer>();
     visited[s] = true;
     queue.add(s);
+
     while(queue.size()!=0){
       s=queue.poll();
       System.out.println(s+" ");
