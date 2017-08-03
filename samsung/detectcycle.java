@@ -1,163 +1,100 @@
+// A Java Program to detect cycle in an undirected graph
+import java.io.*;
 import java.util.*;
 
-class Graph{
-  int V;
-  LinkedList<Integer>[] adj;
-
-  Graph(int V){
-    this.V = V;
-    adj = new LinkedList[V];
-    for(int i=0; i<V; i++)
-      adj[i] = new LinkedList<Integer>();
-  }
-
-  void addEdge(int v, int w){
-    adj[v].add(w);
-  }
-
-  boolean detectCycle(){
-    boolean[] recurstack = new boolean[V];
-    boolean[] visited = new boolean[V];
-    for(int i=0; i<V; i++){
-      visited[i]=false;
-      recurstack[i]=false;
-    }
-    for(int i=0; i<V; i++){
-      System.out.println("loop "+i);
-      if(detectCycleUtil(i,visited,recurstack))
-        return true;
-    }
-    return false;
-  }
-
-  boolean detectCycleUtil(int v, boolean[] visited, boolean[] recurstack){
-    if(!visited[v]){
-      visited[v]=true;
-      recurstack[v]=true;
-      Iterator<Integer> i = adj[v].listIterator();
-      while(i.hasNext()){
-        v=i.next();
-          System.out.println(v);
-        if(!visited[v] && detectCycleUtil(v,visited,recurstack))
-          return true;
-        //System.out.println(v+" "+recurstack[v]);
-        else if(recurstack[v])
-        { //sSystem.out.println("vsiit "+v);
-          return true;}
-      }
-    }
-    recurstack[v]=false;
-    return false;
-  }
-}
-
-class detectcycle{
-  public static void main(String[] args) {
-    Graph  g = new Graph(4);
-    g.addEdge(0,1);
-    g.addEdge(0,2);
-    //g.addEdge(2,0);
-    g.addEdge(2,3);
-    //g.addEdge(3,3);
-    if(g.detectCycle())
-      System.out.println("Loop present!");
-    else
-      System.out.println("Not present!");
-  }
-}
-
-/*
-// A C++ Program to detect cycle in a graph
-#include<iostream>
-#include <list>
-#include <limits.h>
-
-using namespace std;
-
+// This class represents a directed graph using adjacency list
+// representation
 class Graph
 {
-    int V;    // No. of vertices
-    list<int> *adj;    // Pointer to an array containing adjacency lists
-    bool isCyclicUtil(int v, bool visited[], bool *rs);  // used by isCyclic()
-public:
-    Graph(int V);   // Constructor
-    void addEdge(int v, int w);   // to add an edge to graph
-    bool isCyclic();    // returns true if there is a cycle in this graph
-};
+    private int V;   // No. of vertices
+    private LinkedList<Integer> adj[]; // Adjacency List Represntation
 
-Graph::Graph(int V)
-{
-    this->V = V;
-    adj = new list<int>[V];
-}
+    // Constructor
+    Graph(int v) {
+        V = v;
+        adj = new LinkedList[v];
+        for(int i=0; i<v; ++i)
+            adj[i] = new LinkedList();
+    }
 
-void Graph::addEdge(int v, int w)
-{
-    adj[v].push_back(w); // Add w to v’s list.
-}
+    // Function to add an edge into the graph
+    void addEdge(int v,int w) {
+        adj[v].add(w);
+        adj[w].add(v);
+    }
 
-// This function is a variation of DFSUytil() in http://www.geeksforgeeks.org/archives/18212
-bool Graph::isCyclicUtil(int v, bool visited[], bool *recStack)
-{
-    if(visited[v] == false)
+    // A recursive function that uses visited[] and parent to detect
+    // cycle in subgraph reachable from vertex v.
+    Boolean isCyclicUtil(int v, Boolean visited[], int parent)
     {
-        // Mark the current node as visited and part of recursion stack
+        // Mark the current node as visited
         visited[v] = true;
-        recStack[v] = true;
+        Integer i;
 
         // Recur for all the vertices adjacent to this vertex
-        list<int>::iterator i;
-        for(i = adj[v].begin(); i != adj[v].end(); ++i)
+        Iterator<Integer> it = adj[v].iterator();
+        while (it.hasNext())
         {
-            if ( !visited[*i] && isCyclicUtil(*i, visited, recStack) )
-                return true;
-            else if (recStack[*i])
+            i = it.next();
+
+            // If an adjacent is not visited, then recur for that
+            // adjacent
+            if (!visited[i])
+            {
+                if (isCyclicUtil(i, visited, v))
+                    return true;
+            }
+
+            // If an adjacent is visited and not parent of current
+            // vertex, then there is a cycle.
+            else if (i != parent)
                 return true;
         }
-
+        return false;
     }
-    recStack[v] = false;  // remove the vertex from recursion stack
-    return false;
-}
 
-// Returns true if the graph contains a cycle, else false.
-// This function is a variation of DFS() in http://www.geeksforgeeks.org/archives/18212
-bool Graph::isCyclic()
-{
-    // Mark all the vertices as not visited and not part of recursion
-    // stack
-    bool *visited = new bool[V];
-    bool *recStack = new bool[V];
-    for(int i = 0; i < V; i++)
+    // Returns true if the graph contains a cycle, else false.
+    Boolean isCyclic()
     {
-        visited[i] = false;
-        recStack[i] = false;
+        // Mark all the vertices as not visited and not part of
+        // recursion stack
+        Boolean visited[] = new Boolean[V];
+        for (int i = 0; i < V; i++)
+            visited[i] = false;
+
+        // Call the recursive helper function to detect cycle in
+        // different DFS trees
+        for (int u = 0; u < V; u++)
+            if (!visited[u]) // Don't recur for u if already visited
+                if (isCyclicUtil(u, visited, -1))
+                    return true;
+
+        return false;
     }
 
-    // Call the recursive helper function to detect cycle in different
-    // DFS trees
-    for(int i = 0; i < V; i++)
-        if (isCyclicUtil(i, visited, recStack))
-            return true;
-
-    return false;
 }
+class detectcycle{
+    // Driver method to test above methods
+    public static void main(String args[])
+    {
+        // Create a graph given in the above diagram
+        Graph g1 = new Graph(5);
+        g1.addEdge(1, 0);
+        g1.addEdge(0, 2);
+        g1.addEdge(2, 0);
+        g1.addEdge(0, 3);
+        g1.addEdge(3, 4);
+        if (g1.isCyclic())
+            System.out.println("Graph contains cycle");
+        else
+            System.out.println("Graph doesn't contains cycle");
 
-int main()
-{
-    // Create a graph given in the above diagram
-    Graph g(4);
-    g.addEdge(0, 1);
-    g.addEdge(0, 2);
-    g.addEdge(1, 2);
-    g.addEdge(2, 0);
-    g.addEdge(2, 3);
-    g.addEdge(3, 3);
-
-    if(g.isCyclic())
-        cout << "Graph contains cycle";
-    else
-        cout << "Graph doesn't contain cycle";
-    return 0;
+        Graph g2 = new Graph(3);
+        g2.addEdge(0, 1);
+        g2.addEdge(1, 2);
+        if (g2.isCyclic())
+            System.out.println("Graph contains cycle");
+        else
+            System.out.println("Graph doesn't contains cycle");
+    }
 }
-*/
